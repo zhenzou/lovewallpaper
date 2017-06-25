@@ -12,18 +12,21 @@ module.exports = {
   hostname: 'open.lovebizhi.com/baidu_rom.php',
   setting: function () {
     if ( ! setting ) {
-      setting = load();
+     setting=  load();
     }
     return setting;
   },
   save: function (update) {
     if ( update ) {
       let configPath = path.join(configDir, configName);
-      setting = Object.assign(setting, update);
+      update = Object.assign(this.setting(), update);
       return new Promise((resolve, reject) => {
-        fs.writeFile(configPath, JSON.stringify(setting, null, '  '), (err) => {
+        fs.writeFile(configPath, JSON.stringify(update, null, '  '), (err) => {
           if ( err ) reject(err);
-          else resolve(setting);
+          else {
+            setting = update;
+            resolve(setting);
+          }
         });
       });
     } else {
