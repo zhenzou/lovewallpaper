@@ -87,7 +87,7 @@ function createWindow() {
     frame: false,
   });
   // mainWindow.setMenu(null);
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist', 'index.html'),

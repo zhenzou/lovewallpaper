@@ -4,22 +4,22 @@ const fs = require('fs');
 
 const app = 'love-wallpaper';
 const configDir = HomeDir(path.join('.config', app));
-const configName = 'love-wallpager.json';
+const configName = 'love-wallpaper.json';
 
 module.exports = {
-  config:null,
+  config: null,
   app: app,
   hostname: 'open.lovebizhi.com/baidu_rom.php',
   setting: function () {
-    if ( ! setting) {
-      check();
+    if ( ! setting ) {
+      setting = load();
     }
     return setting;
   },
   save: function (update) {
     if ( update ) {
       let configPath = path.join(configDir, configName);
-      setting = Object.assign(update);
+      setting = Object.assign(setting, update);
       return new Promise((resolve, reject) => {
         fs.writeFile(configPath, JSON.stringify(setting, null, '  '), (err) => {
           if ( err ) reject(err);
@@ -44,13 +44,13 @@ function init(p) {
   return defaultSetting;
 }
 
-function check() {
+function load() {
   if ( ! fs.existsSync(configDir) ) fs.mkdirSync(configDir);
   let configPath = path.join(configDir, configName);
   if ( ! fs.existsSync(configPath) ) {
-    setting = init(configPath);
+    return init(configPath);
   } else {
-    setting = update(configPath);
+    return update(configPath);
   }
 }
 
