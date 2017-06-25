@@ -9,7 +9,7 @@ const url = require('url');
 const wallpaper = require('./wallpaper');
 
 const API = require('./api');
-
+const setting = require('./setting');
 const api = new API();
 
 let mainWindow;
@@ -50,6 +50,13 @@ function listeners() {
       .catch((err) => { console.log(err); e.sender.send('message', 'Downloading Failed  Σ(;ﾟдﾟ)'); });
   });
 
+  ipcMain.on('save-setting', (e, update) => {
+    console.log('save-setting: ', update);
+    setting.save(update)
+    .then(e.sender.send('message', '保存成功'))
+    .catch((err)=>e.sender.send('message','保存失败'));
+  });
+
   ipcMain.on('set-wallpaper', (e, imageUrl) => {
     console.log('download image from: ', imageUrl);
     api.download(imageUrl)
@@ -80,13 +87,14 @@ function createWindow() {
     frame: false,
   });
   // mainWindow.setMenu(null);
-
+  mainWindow.webContents.openDevTools();
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist', 'index.html'),
     protocol: 'file:',
     slashes: true,
   }));
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;

@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
-const { hostname, savePath } = require('./setting');
 const { join } = require('path');
 const { createWriteStream, existsSync, mkdirSync } = require('fs');
 const url = require('url');
+
+const { hostname, setting } = require('./setting');
 
 const defaultOpts = {
   width: '1920',
@@ -45,7 +46,8 @@ module.exports = class API {
   }
   download(destUrl) {
     return new Promise((resolve, reject) => {
-      if (!existsSync(savePath))mkdirSync(savePath);
+      let savePath = setting().savePath;
+      if ( ! existsSync(savePath) ) mkdirSync(savePath);
       const fileName = destUrl.match(/[^\/]+$/)[0];
       const filePath = join(savePath, fileName);
       if (existsSync(filePath)) {

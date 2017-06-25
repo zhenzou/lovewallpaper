@@ -1,7 +1,11 @@
 import { ipcRenderer } from 'electron';
-import { SET_SIDEBAR_STATUS, SET_SNACKBAR_STATUS, SET_MODAL_STATUS } from '../constants';
+import {
+  SET_SIDEBAR_STATUS,
+  SET_SNACKBAR_STATUS,
+  SET_MODAL_STATUS,
+  SET_PREFERENCE_STATUS
+} from '../constants';
 import store from '../store';
-
 
 export function setSidebarStatus(status) {
   return {
@@ -27,9 +31,18 @@ export function setModalStatus(status, message = '') {
   };
 }
 
+export function setPreferenceStatus(status, savePath = '', message = '') {
+  return {
+    type: SET_PREFERENCE_STATUS,
+    show: status,
+    savePath: savePath,
+    message,
+  };
+}
+
 ipcRenderer.on('message', (e, message) => {
   // close dialog if necessary
-  if (store.getState().getIn(['ui', 'modal', 'show'])) {
+  if ( store.getState().getIn(['ui', 'modal', 'show']) ) {
     store.dispatch(setModalStatus(false));
   }
   // dispatch action by hand.

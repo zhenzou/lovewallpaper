@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import ScrollBars from 'react-custom-scrollbars';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { setSidebarStatus } from '../action/ui';
+import { setSidebarStatus,setPreferenceStatus } from '../action/ui';
 
 const SideBarLink = ({ to, children }) => (
   <Link
@@ -41,6 +41,7 @@ const mapStateToProps = state => ({
 
 const mapDisPatcherToProps = dispatch => bindActionCreators({
   setSidebarStatus,
+  setPreferenceStatus,
 }, dispatch);
 
 @connect(mapStateToProps, mapDisPatcherToProps)
@@ -48,6 +49,7 @@ export default class Sidebar extends React.Component {
   static propTypes = {
     show: React.PropTypes.bool.isRequired,
     setSidebarStatus: React.PropTypes.func.isRequired,
+    setPreferenceStatus: React.PropTypes.func.isRequired,
     category: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     everyday: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   };
@@ -76,21 +78,6 @@ export default class Sidebar extends React.Component {
           />
           <ScrollBars autoHide style={{ height: 'calc(100% - 64px)' }}>
             <List>
-              <SideBarLink key="recommend" to="/image/recommend">
-                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
-                  推荐壁纸
-                </ListItem>
-              </SideBarLink>
-              <SideBarLink key="wallpaper" to="/image/wallpaper">
-                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
-                  试试手气
-                </ListItem>
-              </SideBarLink>
-              <SideBarLink key="ranking" to="/image/ranking">
-                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
-                  壁纸排行
-                </ListItem>
-              </SideBarLink>
               <ListItem
                 key="category"
                 primaryText="分类"
@@ -121,6 +108,24 @@ export default class Sidebar extends React.Component {
                   ))
                 }
               />
+              <SideBarLink key="recommend" to="/image/recommend">
+                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
+                  推荐壁纸
+                </ListItem>
+              </SideBarLink>
+              <SideBarLink key="wallpaper" to="/image/wallpaper">
+                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
+                  试试手气
+                </ListItem>
+              </SideBarLink>
+              <SideBarLink key="ranking" to="/image/ranking">
+                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
+                  壁纸排行
+                </ListItem>
+              </SideBarLink>
+              <ListItem onTouchTap={() => {this.props.setSidebarStatus(false);this.props.setPreferenceStatus(true);}}>
+                  首选项
+              </ListItem>
             </List>
           </ScrollBars>
         </Drawer>

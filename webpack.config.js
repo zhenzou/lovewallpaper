@@ -16,7 +16,7 @@ module.exports = {
     loaders: [{
       loader: 'babel-loader',
       include: [
-        path.resolve(__dirname, 'src/js'),
+        path.resolve(__dirname, 'src/js'), path.resolve(__dirname, 'setting.js'), path.resolve(__dirname, 'api.js')
       ],
       exclude: /node_modules/,
       // Only run `.js` and `.jsx` files through Babel
